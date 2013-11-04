@@ -1,0 +1,49 @@
+{
+    "name": "bangpound/castle-search",
+    "license": "MIT",
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://bangpound.github.io/satis-repository"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "silex/silex": "~1.1",
+        "symfony/class-loader": "~2.3",
+        "symfony/config": "~2.3",
+        "symfony/console": "~2.3",
+        "symfony/finder": "~2.3",
+        "symfony/monolog-bridge": "~2.3",
+        "symfony/process": "~2.3",
+        "symfony/security": "~2.3",
+        "symfony/twig-bridge": "~2.3",
+        "symfony/validator": "~2.3",
+        "yohang/dependency-tools": "1.0.*",
+        "bangpound/wordpress-silex-extension": "dev-master",
+        "bangpound/php-cms-bootstrap-silex-extension": "dev-master",
+        "bangpound/guzzle-proxy-silex-extension": "dev-master"
+    },
+    "require-dev": {
+        "silex/web-profiler": "~1.0",
+        "symfony/browser-kit": "~2.3",
+        "symfony/css-selector": "~2.3",
+        "raulfraile/ladybug": "~0.7"
+    },
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "Yohang\\DependencyTools::installDeps"
+        ],
+        "post-update-cmd": [
+            "Yohang\\DependencyTools::installDeps"
+        ]
+    },
+    "extra": {
+        "dependency-tools": {
+            "bower": true
+        }
+    }
+}

@@ -1,0 +1,118 @@
+{% extends "layout.html.twig" %}
+
+{% block stylesheets %}
+{% for asset_url in [
+    "#{ app.request.basepath }/vendor/bootstrap/dist/css/bootstrap.css",
+    "#{ app.request.basepath }/vendor/bootstrap/dist/css/bootstrap-theme.css",
+    "#{ app.request.basepath }/vendor/font-awesome/css/font-awesome.css",
+    "#{ app.request.basepath }/vendor/dangle/css/dangle.css",
+    "http://fonts.googleapis.com/css?family=Maven+Pro:400,500"
+] %}
+<link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+{% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+{% for asset_url in [
+    "#{ app.request.basepath }/vendor/underscore/underscore.js",
+    "#{ app.request.basepath }/vendor/underscore.string/dist/underscore.string.min.js",
+    "#{ app.request.basepath }/vendor/jquery/jquery.js",
+    "#{ app.request.basepath }/vendor/angular/angular.js",
+    "#{ app.request.basepath }/vendor/angular-promise-tracker/promise-tracker.js",
+    "#{ app.request.basepath }/vendor/elastic.js/dist/elastic.js",
+    "#{ app.request.basepath }/vendor/elastic.js/dist/elastic-angular-client.js",
+    "#{ app.request.basepath }/vendor/d3/d3.js",
+    "#{ app.request.basepath }/vendor/dangle/dist/dangle.js",
+    "#{ app.request.basepath }/vendor/twitter-text/twitter-text.js",
+    "#{ app.request.basepath }/vendor/bootstrap/dist/js/bootstrap.js",
+    "#{ app.request.basepath }/js/app.js",
+    "#{ app.request.basepath }/js/controllers.js",
+    "#{ app.request.basepath }/js/components.js",
+    "#{ app.request.basepath }/js/filters.js"
+] %}
+<script src="{{ asset_url }}"></script>
+{% endfor %}
+{% endblock %}
+
+{% block content %}
+<div ng-controller="SearchCtrl" ng-cloak>
+<nav class="navbar navbar-default" role="navigation">
+    <form ng-submit="search()" class="navbar-form navbar-left" role="search">
+        <div class="btn-group">
+            <a class="search-info" title="Search Help" data-toggle="modal" data-target="#search-help">
+                <i class="icon-question-sign"></i>
+            </a>
+        </div>
+        <div class="form-group">
+            <input class="form-control" ng-model="queryTerm" placeholder="Search our Archive" type="search" />
+        </div>
+        <div class="btn-group search-variables">
+            <a title="change result set size" data-toggle="modal" data-target="#modal-results">
+                {% verbatim %}{{ query.size() }}{% endverbatim %}
+            </a>
+            <a ng-click="toggleSort()">
+                <i ng-class="{'asc': 'icon-sort-by-attributes icon-flip-vertical', 'desc': 'icon-sort-by-attributes-alt'}[sort.order]" class="glyphicon"></i>
+            </a>
+        </div>
+        <button ng-click="search()" type="submit"><i class="icon-search"></i></button>
+    </form>
+</nav>
+
+<section id="pagetop">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="pagetitle"><span class="notify_loading" ng-show="ninjaFinder.active()"><i class="icon-spinner icon-spin"></i> Updating</span> Results</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section id="pagemain">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-12">
+                <fs-date-histo bind="results.facets['Date posted']" height="200" on-click="filterByDate" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="panel panel-default" ng-repeat="(key, value) in results.facets" ng-show="value._type == 'terms' && (value.total > 0 || value._type != 'terms')" ng-switch on="value._type">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#facet-{% verbatim %}{{$index}}{% endverbatim %}">
+                        <h3 class="panel-title">{% verbatim %}{{ key }}{% endverbatim %}</h3>
+                    </div>
+                    <ul id="facet-{% verbatim %}{{$index}}{% endverbatim %}" class="list-group list-unstyled facets collapse in" ng-switch-when="terms" ng-controller="TermFacet" ng-init="init(key, query)">
+                        <li class="list-group-item" ng-repeat="entry in value.terms" dir="{% verbatim %}{{ entry.term | directionality }}{% endverbatim %}">
+                            <a ng-click="filter(key, entry.term)">
+                                <i class="glyphicon glyphicon-remove-sign" ng-show="isActive(key, entry.term)"></i> {% verbatim %}{{ entry.term }}{% endverbatim %}
+                            </a> <span class="badge">{% verbatim %}{{ entry.count | number }}{% endverbatim %}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-lg-8">
+                <ul class="list-unstyled">
+                    <li ng-repeat="doc in results.hits.hits" class="media well well-sm">
+                        <search-result doc="doc"></search-result>
+                    </li>
+                </ul>
+                <ul class="pagination">
+                    <li class="prev" ng-class="{disabled: (query.from() - query.size()) < 0}">
+                        <a ng-click="pager.prev()">&laquo; Prev</a>
+                    </li>
+                    <li>
+                        <span>{% verbatim %}{{ query.from() + 1 | number }}{% endverbatim %} &ndash; {% verbatim %}{{ query.from() + query.size() | number }}{% endverbatim %} of {% verbatim %}{{ results.hits.total | number }}{% endverbatim %}</span>
+                    </li>
+                    <li class="next" ng-class="{disabled: (query.from() + query.size()) > results.hits.total}">
+                        <a ng-click="pager.next()">Next &raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'modal_help.html.twig' %}
+{% include 'modal_results.html.twig' %}
+
+</div>
+{% endblock %}

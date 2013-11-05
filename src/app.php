@@ -11,17 +11,6 @@ use Symfony\Component\HttpFoundation\RequestMatcher;
 $app->register(new UrlGeneratorServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
-$app->register(new Bangpound\Guzzle\Proxy\GuzzleProxyProvider(), array(
-    'proxy.endpoints' => array(
-        'prod' => array(
-            'host' => $app['elasticsearch.prod.host'] . '/' . $app['elasticsearch.prod.index'],
-        ),
-    ),
-    'proxy.mount_prefix' => '/search',
-));
-
-$app->register(new Bangpound\Silex\PhpCmsBootstrapProvider(), array());
-$app->register(new Bangpound\Silex\WordpressServiceProvider(), array());
 
 $app->register(new TwigServiceProvider(), array(
     'twig.options'        => array(

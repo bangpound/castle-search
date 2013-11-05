@@ -1,4 +1,4 @@
-rShiefSearch = angular.module('castleSearch', [
+castleSearch = angular.module('castleSearch', [
         'ajoslin.promise-tracker',
         'elasticjs.service',
         'dangle'
@@ -6,5 +6,5 @@ rShiefSearch = angular.module('castleSearch', [
     .config(function($locationProvider) {
         $locationProvider.html5Mode(true);
     })
-    .constant('ejsConfig', {server: rShief.baseurl + '/search/prod', tracker: 'searching'})
+    .constant('ejsConfig', {server: castle.serverUrl, tracker: 'searching'})
 ;

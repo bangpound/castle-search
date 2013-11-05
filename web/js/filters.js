@@ -1,4 +1,4 @@
-rShiefSearch
+castleSearch
     .filter('twitterProfile', function ($filter) {
         return function (input) {
             return input.default_profile_image ? 'http://robohash.org/'+input.screen_name+'.png' : input.profile_image_url;

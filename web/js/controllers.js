@@ -1,4 +1,4 @@
-rShiefSearch
+castleSearch
     .controller('SearchCtrl', function($location, $scope, ejsResource, ejsConfig, promiseTracker) {
         var ejs = ejsResource(ejsConfig);
         var oQuery = ejs.QueryStringQuery();

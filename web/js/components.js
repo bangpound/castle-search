@@ -1,9 +1,9 @@
-rShiefSearch
+castleSearch
     .directive('searchResult', ['$compile', '$http', '$templateCache', function($compile, $http, $templateCache) {
 
         var getTemplate = function(type) {
             var templateLoader,
-            baseUrl = rShief.basepath + '/templates/components/result/',
+            baseUrl = castle.basepath + '/templates/components/result/',
             templateMap = {
                 atom: 'atom.html',
                 error_message: 'error_message.html'

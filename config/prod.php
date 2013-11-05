@@ -10,5 +10,5 @@ $app['http_cache.cache_dir'] = $app['cache.path'] . '/http';
 $app['twig.options.cache'] = $app['cache.path'] . '/twig';
 
 // Elasticsearch
-$app['elasticsearch.prod.host'] = 'http://localhost:9200';
-$app['elasticsearch.prod.index'] = 'production';
+$app['elasticsearch.host'] = 'http://localhost:9200';
+$app['elasticsearch.index'] = 'production';

@@ -36,28 +36,42 @@
 
 {% block content %}
 <div ng-controller="SearchCtrl" ng-cloak>
+
 <nav class="navbar navbar-default" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="#">Castle</a>
+  </div>
+
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
     <form ng-submit="search()" class="navbar-form navbar-left" role="search">
         <div class="btn-group">
-            <a class="search-info" title="Search Help" data-toggle="modal" data-target="#search-help">
+            <a class="search-info btn btn-default" title="Search Help" data-toggle="modal" data-target="#search-help">
                 <i class="icon-question-sign"></i>
             </a>
         </div>
         <div class="form-group">
-            <input class="form-control" ng-model="queryTerm" placeholder="Search our Archive" type="search" />
+            <input class="form-control" ng-model="queryTerm" type="search" placeholder="Search" />
         </div>
         <div class="btn-group search-variables">
-            <a title="change result set size" data-toggle="modal" data-target="#modal-results">
+            <a title="change result set size" class="btn btn-default" data-toggle="modal" data-target="#modal-results">
                 {% verbatim %}{{ query.size() }}{% endverbatim %}
             </a>
-            <a ng-click="toggleSort()">
+            <a class="btn btn-default" ng-click="toggleSort()">
                 <i ng-class="{'asc': 'icon-sort-by-attributes icon-flip-vertical', 'desc': 'icon-sort-by-attributes-alt'}[sort.order]" class="glyphicon"></i>
             </a>
         </div>
-        <button ng-click="search()" type="submit"><i class="icon-search"></i></button>
+        <button ng-click="search()" class="btn btn-default" type="submit"><i class="icon-search"></i></button>
     </form>
+  </div><!-- /.navbar-collapse -->
 </nav>
-
 <section id="pagetop">
     <div class="container">
         <div class="row">
